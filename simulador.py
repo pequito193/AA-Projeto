@@ -60,7 +60,7 @@ class Simulador:
             rewards = {ag.nome: 0 for ag in self.agentes}
 
             while not done and steps < self.params["max_steps_per_episode"]:
-                # 1. PERCEPÇÃO: Apenas um bloco para observação
+                # PERCEPÇÃO: Apenas um bloco para observação
                 for ag in self.agentes:
                     if hasattr(ag, 'sensores') and ag.sensores:
                         percepcao = {}
@@ -70,10 +70,10 @@ class Simulador:
                     else:
                         ag.observacao(self.ambiente.observacaoPara(ag))
 
-                # 2. DELIBERAÇÃO
+                # DELIBERAÇÃO
                 actions = {ag: ag.age() for ag in self.agentes}
 
-                # 3. EXECUÇÃO E RECOMPENSA
+                # EXECUÇÃO E RECOMPENSA
                 for ag, ac in actions.items():
                     r = self.ambiente.agir(ac, ag)
                     rewards[ag.nome] += r
@@ -85,4 +85,4 @@ class Simulador:
             for name, r in rewards.items():
                 self.logger.registar(ep, name, r, steps)
 
-        self.logger.guardar("results.csv")
+        self.logger.guardar("results/results.csv")

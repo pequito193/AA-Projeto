@@ -1,5 +1,5 @@
 import random
-import json # Para salvar/carregar a tabela Q
+import json
 from src.agentes.base import AgenteBase
 
 ACTIONS = ["UP", "DOWN", "LEFT", "RIGHT", "STAY"]

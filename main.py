@@ -15,17 +15,15 @@ def main():
     print(f"--- Iniciando Simulador com: {config_path} ---")
 
     try:
-        # 2. Instanciação do Motor de Simulação conforme requisito
+        # Instanciação do Motor de Simulação conforme requisito
         sim = Simulador(config_path)
 
-        # 3. Listagem de agentes carregados (Requisito: listaAgentes()
         agentes = sim.listaAgentes()
         print(f"Agentes detetados: {[a.nome for a in agentes]}")
 
-        # 4. Execução da simulação
         sim.executa()
 
-        # 5. Guardar políticas após o treino (se aplicável)
+        # Guardar políticas após o treino
         for ag in agentes:
             if hasattr(ag, 'modo') and ag.modo == "learn":
                 policy_name = f"results/{ag.nome}_qtable.json"
