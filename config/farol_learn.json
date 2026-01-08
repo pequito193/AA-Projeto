@@ -1,0 +1,25 @@
+{
+  "problem": "farol",
+  "width": 5,
+  "height": 5,
+  "target": [2, 2],
+  "walls": [], 
+  "agents": [
+    {
+      "type": "fixed",
+      "name": "agente_fixo",
+      "start": [0, 0]
+    },
+    {
+      "type": "qlearn",
+      "name": "agente_q",
+      "start": [4, 4],
+      "modo": "learn",
+      "alpha": 0.5,
+      "gamma": 0.95,
+      "epsilon": 0.2
+    }
+  ],
+  "max_steps_per_episode": 60,
+  "n_episodes": 100
+}
