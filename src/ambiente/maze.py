@@ -22,6 +22,6 @@ class MazeEnvironment(GridEnvironment):
         self.positions[agente.nome] = (x, y)
 
         if (x, y) == self.target:
-            return 10000.0  # Recompensa por encontrar a saída
+            return 1000.0  # Recompensa por encontrar a saída
         
         return -0.05  # Custo por passo no labirinto
