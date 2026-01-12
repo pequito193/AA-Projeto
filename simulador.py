@@ -1,4 +1,5 @@
 import json
+import math
 from src.ambiente.grid import GridEnvironment
 from src.ambiente.maze import MazeEnvironment
 from src.agentes.agente_fixo import FixedAgent
@@ -49,13 +50,30 @@ class Simulador:
             self.agentes.append(ag)
             self.ambiente.add_agent(ag)
 
+    def _atualizar_percepcao(self, ag):
+        # Método auxiliar para atualizar a percepção de um agente.
+        if hasattr(ag, 'sensores') and ag.sensores:
+            percepcao = {}
+            for s in ag.sensores:
+                percepcao.update(s.ler(self.ambiente, ag))
+            ag.observacao(percepcao)
+        else:
+            ag.observacao(self.ambiente.observacaoPara(ag))
+
     def executa(self, n_episodes=None):
         if n_episodes is None:
             n_episodes = self.params.get("n_episodes", 1)
 
+        # Ajuste dinâmico do decay para garantir exploração ao longo dos episódios
+        # Queremos que o epsilon chegue a 0.01 por volta de 90% dos episódios
+        decay_calculado = 0.999 # Valor seguro padrão
+
         for ep in range(n_episodes):
             self.ambiente.reset()
-            for ag in self.agentes: ag.reset()
+            for ag in self.agentes: 
+                ag.reset()
+                # Perceção Inicial (Antes de qualquer ação)
+                self._atualizar_percepcao(ag)
 
             done = False
             steps = 0
@@ -63,28 +81,27 @@ class Simulador:
 
             while not done and steps < self.params["max_steps_per_episode"]:
                 # IMPORTANTE - COMENTAR A LINHA SEGUINTE SE QUISERMOS NÃO MOSTRAR A VISUALIZAÇÃO
-                self.visualizador.desenhar(self.ambiente, self.agentes, ep, steps)
+                # self.visualizador.desenhar(self.ambiente, self.agentes, ep, steps)
 
-                # PERCEPÇÃO: Apenas um bloco para observação
+                # ATUALIZAÇÃO DE PARAMETROS (EPSILON)
                 for ag in self.agentes:
                     if hasattr(ag, 'atualizar_epsilon'):
-                        ag.atualizar_epsilon()
-                    if hasattr(ag, 'sensores') and ag.sensores:
-                        percepcao = {}
-                        for s in ag.sensores:
-                            percepcao.update(s.ler(self.ambiente, ag))
-                        ag.observacao(percepcao)
-                    else:
-                        ag.observacao(self.ambiente.observacaoPara(ag))
+                        ag.atualizar_epsilon(decay=decay_calculado)
 
-                # DELIBERAÇÃO
+                # DELIBERAÇÃO (Escolha da ação com base na percepção atual)
                 actions = {ag: ag.age() for ag in self.agentes}
 
                 # EXECUÇÃO E RECOMPENSA
                 for ag, ac in actions.items():
                     r = self.ambiente.agir(ac, ag)
                     rewards[ag.nome] += r
-                    ag.avaliacaoEstadoAtual(r) # Aqui ocorre o Q-Learning se modo="learn"
+                    
+                    # CORREÇÃO CRÍTICA:
+                    # O agente deve observar o NOVO estado (S') antes de avaliar a transição.
+                    self._atualizar_percepcao(ag)
+                    
+                    # Q-Learning Update: Usa a recompensa r e a nova observação (max Q(S'))
+                    ag.avaliacaoEstadoAtual(r)
 
                 done = self.ambiente.atualizacao()
                 steps += 1

@@ -42,7 +42,7 @@ class QLearningAgent(AgenteBase):
         self.last_action = a
         return a
 
-    def atualizar_epsilon(self, decay=0.995, min_epsilon=0.01):
+    def atualizar_epsilon(self, decay=0.999, min_epsilon=0.01):
         if self.modo == "learn":
             self.epsilon = max(min_epsilon, self.epsilon * decay)
 
@@ -57,6 +57,7 @@ class QLearningAgent(AgenteBase):
         a = self.last_action
 
         # Fórmula do Q-Learning
+        # Q(S, A) = Q(S, A) + alpha * (R + gamma * max(Q(S', a')) - Q(S, A))
         q_prev[a] += self.alpha * (r + self.gamma * max(q_next.values()) - q_prev[a])
 
     # Métodos de Persistência para o Modo de Teste
