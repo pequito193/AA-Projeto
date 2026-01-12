@@ -2,7 +2,7 @@ import random
 import json
 from src.agentes.base import AgenteBase
 
-ACTIONS = ["UP", "DOWN", "LEFT", "RIGHT", "STAY"]
+ACTIONS = ["UP", "DOWN", "LEFT", "RIGHT"]
 
 def state_from_obs(obs):
     # Converte o dicionário de observação num tuplo (imutável) para ser chave no dicionário Q
@@ -41,6 +41,10 @@ class QLearningAgent(AgenteBase):
         self.last_state = s
         self.last_action = a
         return a
+
+    def atualizar_epsilon(self, decay=0.995, min_epsilon=0.01):
+        if self.modo == "learn":
+            self.epsilon = max(min_epsilon, self.epsilon * decay)
 
     def avaliacaoEstadoAtual(self, r):
         # No modo de teste, não há atualização da tabela Q

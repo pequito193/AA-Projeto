@@ -4,6 +4,7 @@ from src.ambiente.maze import MazeEnvironment
 from src.agentes.agente_fixo import FixedAgent
 from src.agentes.learning_agente import QLearningAgent
 from src.logger.logger import Logger
+from visualizer import Visualizador
 
 class Simulador:
     def __init__(self, params_file: str):
@@ -14,6 +15,7 @@ class Simulador:
         self.ambiente = None
         self.logger = Logger()
         self._build_from_params()
+        self.visualizador = Visualizador()
 
     def listaAgentes(self):
         return self.agentes
@@ -60,8 +62,13 @@ class Simulador:
             rewards = {ag.nome: 0 for ag in self.agentes}
 
             while not done and steps < self.params["max_steps_per_episode"]:
+                # IMPORTANTE - COMENTAR A LINHA SEGUINTE SE QUISERMOS NÃO MOSTRAR A VISUALIZAÇÃO
+                self.visualizador.desenhar(self.ambiente, self.agentes, ep, steps)
+
                 # PERCEPÇÃO: Apenas um bloco para observação
                 for ag in self.agentes:
+                    if hasattr(ag, 'atualizar_epsilon'):
+                        ag.atualizar_epsilon()
                     if hasattr(ag, 'sensores') and ag.sensores:
                         percepcao = {}
                         for s in ag.sensores:

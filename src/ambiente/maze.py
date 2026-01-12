@@ -17,11 +17,11 @@ class MazeEnvironment(GridEnvironment):
 
         # Lógica de colisão com paredes
         if (x, y) in self.walls:
-            return -0.5  # Penalização por colisão
+            return -0.1  # Penalização por colisão
         
         self.positions[agente.nome] = (x, y)
 
         if (x, y) == self.target:
-            return 100.0  # Recompensa por encontrar a saída
+            return 1000.0  # Recompensa por encontrar a saída
         
-        return -0.05  # Custo por passo no labirinto
+        return -0.1  # Custo por passo no labirinto

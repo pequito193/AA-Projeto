@@ -1,6 +1,6 @@
 from src.ambiente.base import AmbienteBase
 
-ACTIONS = ["UP", "DOWN", "LEFT", "RIGHT", "STAY"]
+ACTIONS = ["UP", "DOWN", "LEFT", "RIGHT"]
 
 class GridEnvironment(AmbienteBase):
     def __init__(self, width, height, target, max_steps=100):
