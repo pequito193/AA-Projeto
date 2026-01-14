@@ -29,7 +29,6 @@ def gerar_grafico_automatico():
                 dados_agentes[agente]['episodes'].append(ep)
                 dados_agentes[agente]['steps'].append(steps)
 
-        # Configurar e desenhar o gráfico
         plt.figure(figsize=(10, 6))
         
         for nome, dados in dados_agentes.items():
@@ -53,7 +52,7 @@ def main():
     if len(sys.argv) > 1:
         config_path = sys.argv[1]
     else:
-        config_path = "config/maze_test.json" # Default para testes
+        config_path = "config/maze_learn.json" # Default caso não seja especificado o ficheiro
 
     if not os.path.exists(config_path):
         print(f"Erro: Ficheiro de configuração '{config_path}' não encontrado.")
@@ -62,7 +61,6 @@ def main():
     print(f"--- Iniciando Simulador com: {config_path} ---")
 
     try:
-        # Instanciação do Motor de Simulação conforme requisito
         sim = Simulador(config_path)
 
         agentes = sim.listaAgentes()
@@ -79,7 +77,7 @@ def main():
                 ag.guardar_politica(policy_name)
 
         gerar_grafico_automatico()
-        
+
         print("--- Simulação terminada com sucesso. Resultados guardados em 'results.csv' ---")
 
     except Exception as e:
