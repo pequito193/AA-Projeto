@@ -18,9 +18,9 @@
       "policy_file": "results/explorer_qtable.json",
       "alpha": 0.5,
       "gamma": 0.95,
-      "epsilon": 0.2
+      "epsilon": 0.0
     }
   ],
-  "max_steps_per_episode": 1000,
-  "n_episodes": 500
+  "max_steps_per_episode": 500,
+  "n_episodes": 50
 }

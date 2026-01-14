@@ -15,6 +15,6 @@
       "epsilon": 0.5
     }
   ],
-  "max_steps_per_episode": 1000,
-  "n_episodes": 2000
+  "max_steps_per_episode": 500,
+  "n_episodes": 200
 }
