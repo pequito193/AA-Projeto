@@ -8,4 +8,4 @@
 - python main.py config/maze_test.json
 - python main.py config/farol_test.json
 
-# O gráfico resultante fica disponível no ficheiro results/grafico_steps.png
+# O gráfico resultante fica disponível no ficheiro results/grafico_steps.png, pode ser observado depois de cada comando corrido
