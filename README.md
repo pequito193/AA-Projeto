@@ -9,3 +9,5 @@
 - python main.py config/farol_test.json
 
 # O gráfico resultante fica disponível no ficheiro results/grafico_steps.png, pode ser observado depois de cada comando corrido
+
+# O mapa é configurável nos ficheiros .json, caso pretendamos aumentar ou diminuir o seu tamanho, bem como adicionar mais ou menos obstáculos
